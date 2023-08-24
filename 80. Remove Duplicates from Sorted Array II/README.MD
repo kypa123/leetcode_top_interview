@@ -1,4 +1,4 @@
-#80.Remove Duplicates from Sorted Array II
+# 80.Remove Duplicates from Sorted Array II
 
 [문제 링크](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/?envType=study-plan-v2&envId=top-interview-150)
 
@@ -10,7 +10,8 @@ ex) [1,1,1,2,2,2,3,3,3,3] -> [1,1,2,2,3,3,?,?], return 6
 
 즉 리턴받는 정답인 6번째 인덱스까지는 중복을 제거한 모습이어야 한다. 그 이후의 인덱스의 값은 상관없다.
 
-##접근법
+## 접근법
+
 ```
 1. 0번째 인덱스부터 카운팅하여 증가할 i변수, 추가적으로 중복여부를 확인할 flag 변수를 선언헀다.
 2. 1번째 인덱스부터 순회하며, 현재 인덱스번째 값이 i인덱스의 값과 같다면,
@@ -19,9 +20,11 @@ ex) [1,1,1,2,2,2,3,3,3,3] -> [1,1,2,2,3,3,?,?], return 6
 3. i번째 인덱스의 값과 순회값이 다르다면 i += 1로 업데이트해주며, flag를 false로 초기화해준다.
 ```
 
-##코드
+## 코드
+
 TC - O(n)<br>
 SC - O(1)
+
 ```
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
@@ -41,10 +44,26 @@ class Solution:
         
 ```
 
-##결과
-Runtime - Beats 89.59% users
+## 결과
+
+Runtime - Beats 89.59% users<br>
 Memory - Beats 14.46% users
 
-##회고
+## 회고
+
+flag라는 변수를 추가 선언함으로 풀이를 했지만, 상대적으로 메모리사용량이 늘어나 순위 분포도가 크게 밀렸다.
+
+추가 변수를 선언하지 않고도 분명 풀이법이 존재할 것이라 생각했고, 그중 가장 깔끔한 풀이법을 찾아보았다.
+
 ```
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        ans=2
+        for i in range(2,len(nums)):
+            if nums[i]!=nums[ans-2]:nums[ans]=nums[i];ans+=1
+        return ans
 ```
+
+위의 풀이법은 정말 단순하게도 카운트하던 인덱스의 값 -2와 비교하여 2개 이상의 중복이 존재하는지를 체크하여 상위 1퍼센트의 메모리를 기록했다.
+
+간단명료한 코드를 짜내는 것은 어떻게보면 재능의 영역이라고 생각하지만, 이런 좋은 코드들을 많이 보다보면 조금은 닮아나갈 수 있지 않을까 하는 희망을 품어본다.
