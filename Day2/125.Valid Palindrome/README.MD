@@ -40,8 +40,47 @@ class Solution:
 
 ## 결과
 
+Runtime - Beats 73.14% users<br>
+Memory - Beats 12.25% users
 
 ## 회고
 
+코드가 좀 난잡하다는 생각이 들었고, 개선사항을 적용하고자 하였다.
+
+개선사항은 다음과 같다.
+
+- 의미없는 flag를 제거하고, 조건이 맞지 않는다면 즉시 false를 리턴
+- replace가 아닌, 전체코드를 검사하여 공백, 특수문자 등 불필요한 요소를 제거한 문자열을 생성
+- 문자열을 순회하는 것이 아닌, 슬라이싱을 통해 거꾸로 뒤집고 원본과 같은지 확인. [::-1] 연산은 문자열을 뒤집는 가장 빠른 built-in 함수이기 때문
+
+개선사항을 적용한 코드는 다음과 같다.
+
 ```
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        s = ''.join([word.lower() for word in s if word.isalnum()])
+        if s == s[::-1]:
+            return True
+        return False
 ```
+
+코드가 훨씬 간결해졌고, 메모리를 조금 더 사용하여 Runtime을 Beats 98.59% 로 끌어올릴 수 있었다.
+
+문자열을 순회하며 공백, 특수문자를 제거한 리스트를 만든 뒤 이를 다시 join하여 문자열을 만드는 과정에서 메모리를 더 사용한 것이다.
+
+리스트를 만들고 join하는 과정을 개선하자면, list를 만드는 것이 아닌 새로운 string으로 처음부터 만들면 된다. 코드는 다음과 같다.
+
+```
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        string=''
+        for word in s.lower():
+            if word.isalnum():
+                string += word
+        if string == string[::-1]:
+            return True
+        return False
+```
+
+Runtime - Beats 98.11% users<br>
+Memory - Beats 86.77% users
