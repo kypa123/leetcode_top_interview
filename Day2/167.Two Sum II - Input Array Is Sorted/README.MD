@@ -40,5 +40,24 @@ Runtime - Beats 99.67%<br>
 Memory - Beats 57.86%
 
 ## 회고
+
+해당 문제같은 경우, `반드시 정답이 존재한다`는 조건이 붙기 때문에 좀 더 직관적인 while 루프의 조건을 명시할 수 있다.
+
+답이 존재하지 않을수도 있다면, left와 right가 만날 때까지 루프를 도는 것이 일반적이지만 해당 문제는 그렇지 않기 때문이다.
+
+따라서, 다음과 같이 개선사항을 적용할 수 있다.
+
 ```
+class Solution:
+    def twoSum(self, numbers: List[int], target: int) -> List[int]:
+        start = 0
+        end = len(numbers)-1
+        while numbers[start] + numbers[end] != target:
+            if numbers[start] + numbers[end] < target:
+                start += 1
+            else:
+                end -= 1
+        return [start+1, end+1]
 ```
+
+코드가 좀 더 짧아졌고, while 반복문의 반복조건에 제한사항을 명시함으로서 if조건문을 줄일 수 있었다.
