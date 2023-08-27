@@ -42,3 +42,19 @@ Runtime - Beats 85.86% users<br>
 Memory - Beats 24.12%
 
 ## 회고
+
+처음으로 head.next 혹은 head가 null인 가능성은 사실상 while문의 조건상으로도 검사할 수 있는 부분이다. 
+
+따라서 처음의 조건을 제거하여 좀 더 간결한 코드가 될 수 있도록 리팩토링하였다.
+
+```
+class Solution:
+    def hasCycle(self, head: Optional[ListNode]) -> bool:
+        tort = hare = head
+        while hare and hare.next:
+            tort = tort.next
+            hare = hare.next.next
+            if tort == hare:
+                return True
+        return False
+```
