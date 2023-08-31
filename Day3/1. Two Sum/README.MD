@@ -2,28 +2,24 @@
 
 [문제 링크](https://leetcode.com/problems/two-sum/description/?envType=study-plan-v2&envId=top-interview-150)
 
-`MinStack` 클래스의 틀이 주어진다.
+배열 `nums`, 정수형 `target` 가 주어진다.
 
-`getMin` 연산 시 스택 내부에서 가장 작은 값을 상수의 시간복잡도로 가져와야 한다.
+`nums`안에서 더하면 `target`이 되는 숫자 2개의 인덱스를 반환해야 한다.
 
-그밖에 push, pop, top 메소드를 구현해야 한다.
-
+반드시 정답이 하나만 존재하고 같은 원소를 2번 사용할 수 없다. 
 
 ## 접근법
-```
-1. 기존 스택과 큰 차이는 없으나, 상수의 복잡도로 최소값을 가져오려면, 스택 내부의 최소값에 대해 미리 저장해두어야 한다.
-2. pop 연산을 통한 제거 이후 최소값이 유지되어야 하므로, 떠오르는 방법은
-    2-1. stack 내부에 heapq를 추가적으로 선언하여 그때마다 최소값을 계산한다.
-    2-2. 매 스택마다 2개의 값을 저장한다. 하나는 현재 위치의 값, 다른 하나는 현재 위치까지의 최소값
-3. 2-2에 명시된 방법으로 구현했다
-    3-1. 매 pop 연산마다 heapq 내부에서도 업데이트를 해줘야 하는 점이 시간복잡도를 상수값의 시간복잡도로 해결하는 것이 불가능하기 떄문이다.
-```
+1. 공간복잡도와 시간복잡도 중 어디에 중점을 두고 풀지 고를 수 있다고 생각했다.
+2. 시간복잡도를 중점으로 푼다면 해시테이블(딕셔너리)를 통해 매 원소마다 `target - 원소`를 딕셔너리에 저장하고, 이미 존재한다면 이 두 쌍이 곧 정답이다.
+3. 공간복잡도를 중점으로 푼다면, 두 번의 루프를 통해 `target - 원소` 가 `arr[:현재 인덱스 + 1]`에 존재하는지 계속해서 체크해주면 될 것이다.
 
 ## 코드
-TC - O(1)<br>
-SC - O(n)
+
+TC - O(n^2)<br>
+SC - O(1)
 
 ```
+공간복잡도에 중점을 두고 품
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
         arr = []
@@ -39,15 +35,36 @@ class Solution:
                 return arr
 ```
 
+
+TC - O(n)<br>
+SC - O(n)
+```
+시간복잡도에 중점을 두고 품
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        d = {}
+        n = len(nums)
+
+        for i in range(n):
+            temp = target - nums[i]
+            if temp in d:
+                return [d[temp], i]
+            d[nums[i]] = i
+
+        return []
+```
 ## 결과
 
-Runtime - Beats 91.06% users<br>
-Memory - Beats 5.58% users
+Runtime - Beats 38.33% users<br>
+Memory - Beats 100% users
+
+Runtime - Beats 64.31% users<br>
+Memory - Beats 50.91% users
 
 ## 회고
 
-```
-공간복잡도를 더 개선한 사례를 찾아보았으나, 그때마다 min 연산을 통해 최소값을 구하는 대신 최소값을 저장하지 않는 케이스 말고는 찾을 수 없었다.
+퍼센테이지로는 다소 보기 힘들지만, 메모리를 더 사용한 쪽의 런타임이 약 12배가량 더 빨랐다. (854ms -> 71ms)
 
-min 연산을 매 연산마다 실행한다면 상수값을 초과한 시간복잡도가 나오게 되므로, 이는 참고할 수 없다고 판단하여 리팩토링하지 않았다.
-```
+메모리는 14.9mb, 17.6mb로 약 30% 더 사용하였다.
+
+속도와 메모리는 트레이드오프라고 알고있는데, 정답이라고 할 순 없지만 현대의 알고리즘은 넉넉한 메모리 속에서 빠른 속도를 구현하는 것이 대부분인 것 같다.
