@@ -1,6 +1,6 @@
-# 155.Min Stack
+# 1. Two Sum
 
-[문제 링크](https://leetcode.com/problems/min-stack/?envType=study-plan-v2&envId=top-interview-150)
+[문제 링크](https://leetcode.com/problems/two-sum/description/?envType=study-plan-v2&envId=top-interview-150)
 
 `MinStack` 클래스의 틀이 주어진다.
 
@@ -24,21 +24,19 @@ TC - O(1)<br>
 SC - O(n)
 
 ```
-class MinStack:
-    def __init__(self):
-        self.minStack = []
-    def push(self, val: int) -> None:
-        if not self.minStack:
-            self.minStack.append([val,val])
-        else:
-            self.minStack.append([val,min(self.minStack[-1][1], val)])
-    def pop(self) -> None:
-        self.minStack.pop()
-
-    def top(self) -> int:
-        return self.minStack[-1][0]
-    def getMin(self) -> int:
-        return self.minStack[-1][1]
+class Solution:
+    def twoSum(self, nums: List[int], target: int) -> List[int]:
+        arr = []
+        first = 0
+        for i in range(len(nums)):
+            if target-nums[i] in nums[i+1:]:
+                first = i
+                arr.append(i)
+                break
+        for j in range(first+1, len(nums)):
+            if target - nums[first] == nums[j]:
+                arr.append(j)
+                return arr
 ```
 
 ## 결과
